@@ -4,85 +4,132 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MBTI 마음 돌봄 서비스</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <title>자료의 정리 - 초등학교 3학년 수학</title>
   </head>
   <body>
-    <!-- Header: API Key 상태 표시줄 -->
-    <header class="header">
-      <div class="api-status" id="apiStatus">
-        <span class="status-icon">⏳</span>
-        <span class="status-text">API 연결 확인 중...</span>
+    <div id="app">
+      <!-- API 설정 (상단 우측) -->
+      <div class="api-settings">
+        <label for="modelSelect">AI 모델: </label>
+        <select id="modelSelect" class="model-select">
+          <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
+          <option value="gpt-4o-mini">GPT-4o Mini</option>
+          <option value="gpt-4">GPT-4</option>
+        </select>
       </div>
-    </header>
 
-    <!-- Section 1: 대시보드 (Main) -->
-    <section id="dashboardSection" class="section dashboard-section">
-      <div class="container">
-        <h1 class="main-title">🌿 MBTI 마음 돌봄 서비스</h1>
-        <p class="intro-text">
-          당신의 MBTI 성향을 분석하고, 맞춤형 상담을 통해 마음을 돌봐드립니다.
-          <br>간단한 검사를 통해 자신을 알아가고, 따뜻한 위로를 받아보세요.
-        </p>
-        
-        <div class="chart-container">
-          <h2 class="chart-title">참여자 MBTI 유형 분포</h2>
-          <canvas id="mbtiChart"></canvas>
-        </div>
-
-        <button id="startTestBtn" class="primary-btn">검사 시작하기</button>
-      </div>
-    </section>
-
-    <!-- Section 2: MBTI 검사 (Test) -->
-    <section id="testSection" class="section test-section" style="display: none;">
-      <div class="container">
-        <h2 class="section-title">MBTI 검사</h2>
-        <div class="progress-container">
-          <div class="progress-bar">
-            <div class="progress-fill" id="progressFill"></div>
+      <!-- 진행 단계 표시줄 -->
+      <div class="progress-container">
+        <div class="progress-bar">
+          <div class="progress-step" data-step="1">
+            <div class="step-number">1</div>
+            <div class="step-label">주제 정하기</div>
           </div>
-          <span class="progress-text" id="progressText">질문 1 / 12</span>
-        </div>
-
-        <div class="question-container">
-          <h3 class="question-text" id="questionText"></h3>
-          <div class="answer-options" id="answerOptions">
-            <!-- 동적으로 생성됨 -->
+          <div class="progress-step" data-step="2">
+            <div class="step-number">2</div>
+            <div class="step-label">조사하기</div>
+          </div>
+          <div class="progress-step" data-step="3">
+            <div class="step-number">3</div>
+            <div class="step-label">표 만들기</div>
+          </div>
+          <div class="progress-step" data-step="4">
+            <div class="step-number">4</div>
+            <div class="step-label">그림그래프</div>
+          </div>
+          <div class="progress-step" data-step="5">
+            <div class="step-number">5</div>
+            <div class="step-label">해석하기</div>
           </div>
         </div>
-      </div>
-    </section>
-
-    <!-- Section 3: 결과 및 상담 (Result & Chat) -->
-    <section id="resultSection" class="section result-section" style="display: none;">
-      <div class="container">
-        <h2 class="section-title">검사 결과</h2>
-        
-        <div class="result-card" id="resultCard">
-          <!-- 동적으로 생성됨 -->
+        <div class="progress-line">
+          <div class="progress-fill" id="progressFill"></div>
         </div>
-
-        <div class="chat-container">
-          <h3 class="chat-title">💬 마음 돌봄 챗봇</h3>
-          <div class="chat-messages" id="chatMessages">
-            <!-- 채팅 메시지들이 여기에 표시됨 -->
-          </div>
-          <div class="chat-input-container">
-            <input 
-              type="text" 
-              id="chatInput" 
-              class="chat-input" 
-              placeholder="메시지를 입력하세요..."
-              maxlength="500"
-            />
-            <button id="sendBtn" class="send-btn">전송</button>
-          </div>
-        </div>
-
-        <button id="submitResultBtn" class="secondary-btn">내 결과 제출하기</button>
       </div>
-    </section>
+
+      <!-- 메인 컨텐츠 영역 -->
+      <div class="content-container">
+        <!-- 1단계: 주제 정하기 -->
+        <section id="step1" class="step active">
+          <h2 class="step-title">📝 주제 정하기</h2>
+          <div class="step-content">
+            <div class="input-group">
+              <label for="topic">우리 모둠이 조사하고 싶은 주제는 무엇인가요?</label>
+              <input type="text" id="topic" class="large-input" placeholder="예: 좋아하는 과일" />
+            </div>
+            <div class="input-group">
+              <label>조사 항목을 3~4가지 정해주세요.</label>
+              <div class="items-container">
+                <input type="text" id="item1" class="item-input" placeholder="항목 1" />
+                <input type="text" id="item2" class="item-input" placeholder="항목 2" />
+                <input type="text" id="item3" class="item-input" placeholder="항목 3" />
+                <input type="text" id="item4" class="item-input" placeholder="항목 4 (선택)" />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2단계: 자료 조사하기 -->
+        <section id="step2" class="step">
+          <h2 class="step-title">🔍 자료 조사하기</h2>
+          <div class="step-content">
+            <div class="info-box">
+              <p>📚 자료 수집 방법에는 손들기, 스티커 붙이기, 투표하기 등이 있어요.</p>
+            </div>
+            <div class="survey-container" id="surveyContainer">
+              <!-- 동적으로 생성됨 -->
+            </div>
+          </div>
+        </section>
+
+        <!-- 3단계: 표로 나타내기 -->
+        <section id="step3" class="step">
+          <h2 class="step-title">📊 표로 나타내기</h2>
+          <div class="step-content">
+            <p class="step-description">조사한 내용을 표로 정리했어요!</p>
+            <div class="table-container" id="tableContainer">
+              <!-- 동적으로 생성됨 -->
+            </div>
+          </div>
+        </section>
+
+        <!-- 4단계: 그림그래프 그리기 -->
+        <section id="step4" class="step">
+          <h2 class="step-title">📈 그림그래프 그리기</h2>
+          <div class="step-content">
+            <div id="iconLoading" class="loading-message" style="display: none;">
+              <p>🎨 AI가 아이콘을 그리고 있어요...</p>
+            </div>
+            <div class="graph-container" id="graphContainer">
+              <!-- 동적으로 생성됨 -->
+            </div>
+          </div>
+        </section>
+
+        <!-- 5단계: 해석하기 -->
+        <section id="step5" class="step">
+          <h2 class="step-title">💭 해석하기</h2>
+          <div class="step-content">
+            <div class="graph-preview" id="graphPreview">
+              <!-- 그림그래프 미리보기 -->
+            </div>
+            <div class="interpretation-section">
+              <p class="step-description">그래프를 보고 알게 된 점을 이야기해보세요.</p>
+              <button id="askAIBtn" class="primary-btn large-btn">🤖 AI 선생님에게 물어보기</button>
+              <div id="aiResponse" class="ai-response">
+                <!-- AI 응답이 여기에 표시됨 -->
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- 네비게이션 버튼 -->
+      <div class="navigation-buttons">
+        <button id="prevBtn" class="nav-btn prev-btn" style="display: none;">← 이전</button>
+        <button id="nextBtn" class="nav-btn next-btn">다음 →</button>
+      </div>
+    </div>
 
     <script type="module" src="/src/main.js"></script>
   </body>
