@@ -76,6 +76,7 @@ body {
 
 /* 진행 단계 표시줄 */
 .progress-container {
+  margin-top: 80px;
   margin-bottom: 40px;
 }
 
