@@ -9,7 +9,7 @@ function checkAPIKey() {
   if (!API_KEY || API_KEY.trim() === '') {
     return {
       valid: false,
-      message: 'API Key가 설정되지 않았습니다.\n\n.env 파일을 프로젝트 루트에 생성하고 다음 형식으로 입력하세요:\n\nVITE_OPENAI_API_KEY=sk-your-api-key-here'
+      message: 'API Key가 설정되지 않았습니다. \n\n.env 파일을 프로젝트 루트에 생성하고 다음 형식으로 입력하세요:\n\nVITE_OPENAI_API_KEY=sk-your-api-key-here'
     };
   }
   return { valid: true };
