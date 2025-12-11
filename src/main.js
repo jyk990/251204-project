@@ -1,8 +1,19 @@
 import './style.css'
 
 // 환경 변수
-const API_KEY = import.meta.env.VITE_OPENAI_API_KEY;
+const API_KEY = import.meta.env.VITE_OPENAI_API_KEY || '';
 const OPENAI_API_URL = 'https://api.openai.com/v1';
+
+// API Key 검증 함수
+function checkAPIKey() {
+  if (!API_KEY || API_KEY.trim() === '') {
+    return {
+      valid: false,
+      message: 'API Key가 설정되지 않았습니다.\n\n.env 파일을 프로젝트 루트에 생성하고 다음 형식으로 입력하세요:\n\nVITE_OPENAI_API_KEY=sk-your-api-key-here'
+    };
+  }
+  return { valid: true };
+}
 
 // 전역 상태
 let currentStep = 1;
@@ -16,11 +27,26 @@ let formData = {
 
 // 초기화
 document.addEventListener('DOMContentLoaded', () => {
+  checkAndDisplayAPIKeyStatus();
   setupEventListeners();
   setupModelSelector();
   updateProgress();
   updateStepDisplay();
 });
+
+// API Key 상태 확인 및 표시
+function checkAndDisplayAPIKeyStatus() {
+  const keyCheck = checkAPIKey();
+  if (!keyCheck.valid) {
+    // 콘솔에 경고 표시
+    console.warn('⚠️ API Key가 설정되지 않았습니다.');
+    console.warn('📝 .env 파일을 프로젝트 루트에 생성하고 다음 형식으로 입력하세요:');
+    console.warn('   VITE_OPENAI_API_KEY=sk-your-api-key-here');
+    console.warn('   그 다음 개발 서버를 재시작하세요 (npm run dev)');
+  } else {
+    console.log('✅ API Key가 설정되었습니다.');
+  }
+}
 
 // 이벤트 리스너 설정
 function setupEventListeners() {
@@ -252,8 +278,9 @@ async function generateIconAndRenderGraph() {
 
 // DALL-E로 아이콘 생성
 async function generateIcon() {
-  if (!API_KEY) {
-    throw new Error('API Key가 설정되지 않았습니다.');
+  const keyCheck = checkAPIKey();
+  if (!keyCheck.valid) {
+    throw new Error(keyCheck.message);
   }
   
   const prompt = `Simple, cute, child-friendly pixel art style icon for "${formData.topic}". Flat icon, colorful, suitable for elementary school children.`;
@@ -386,8 +413,9 @@ async function askAIForInterpretation() {
   const btn = document.getElementById('askAIBtn');
   const responseDiv = document.getElementById('aiResponse');
   
-  if (!API_KEY) {
-    alert('API Key가 설정되지 않았습니다.');
+  const keyCheck = checkAPIKey();
+  if (!keyCheck.valid) {
+    alert(keyCheck.message);
     return;
   }
   
